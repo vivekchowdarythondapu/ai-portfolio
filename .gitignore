@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# environment secrets & local data
+.env
+.env.local
+
+# uploaded images & dashboard content (local-only)
+backend/uploads/
+backend/data.json
+
+# next.js
+frontend/.next/
+frontend/out/
+
+# misc
+.DS_Store
+*.log

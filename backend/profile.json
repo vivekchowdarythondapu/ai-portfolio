@@ -1,0 +1,33 @@
+{
+  "name": "Your Name",
+  "title": "Full-Stack & AI Engineer",
+  "location": "City, Country",
+  "email": "you@example.com",
+  "summary": "Full-stack developer building web applications with modern AI integration. Experienced in TypeScript, React/Next.js, Python, and FastAPI, with hands-on experience wiring LLM APIs into production features.",
+  "skills": {
+    "languages": ["TypeScript", "JavaScript", "Python", "SQL"],
+    "frontend": ["React", "Next.js", "Tailwind CSS"],
+    "backend": ["FastAPI", "Node.js", "REST APIs"],
+    "ai": ["OpenAI API", "RAG", "Prompt engineering"],
+    "tools": ["Git", "Docker", "PostgreSQL"]
+  },
+  "projects": [
+    {
+      "name": "AI Portfolio",
+      "description": "Full-stack portfolio site with an AI chat assistant. FastAPI backend streams OpenAI responses; Next.js frontend renders the chat widget.",
+      "tech": ["Next.js", "TypeScript", "FastAPI", "OpenAI API", "Tailwind CSS"]
+    }
+  ],
+  "experience": [
+    {
+      "role": "Your Role",
+      "company": "Company Name",
+      "period": "20XX - Present",
+      "highlights": ["Replace with a real achievement, ideally with a number."]
+    }
+  ],
+  "contact": {
+    "github": "https://github.com/yourusername",
+    "linkedin": "https://linkedin.com/in/yourusername"
+  }
+}
