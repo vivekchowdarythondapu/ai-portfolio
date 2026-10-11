@@ -95,6 +95,7 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 
 @app.get("/api/health")
+@app.get("/health")  # alias for external health checkers
 def health() -> dict:
     provider = get_provider()
     return {
