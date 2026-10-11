@@ -1,6 +1,7 @@
 "use client";
 
 import FadeIn from "@/components/FadeIn";
+import Image from "next/image";
 import type { Profile } from "@/lib/api";
 
 export default function ContactSection({ profile }: { profile: Profile }) {
@@ -8,6 +9,15 @@ export default function ContactSection({ profile }: { profile: Profile }) {
     <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
       <FadeIn>
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-600/15 via-transparent to-cyan-500/10 p-10 text-center md:p-16">
+          <div className="mx-auto mb-6 inline-block rounded-full bg-gradient-to-tr from-indigo-500 via-cyan-400 to-purple-500 p-1 shadow-[0_0_40px_rgba(99,102,241,0.3)]">
+            <Image
+              src="/profile.jpg"
+              alt="Vivek Chowdary"
+              width={96}
+              height={96}
+              className="h-20 w-20 rounded-full bg-white object-cover md:h-24 md:w-24"
+            />
+          </div>
           <h2 className="text-3xl font-bold md:text-4xl">
             Let&apos;s work together<span className="text-gradient">.</span>
           </h2>

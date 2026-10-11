@@ -90,7 +90,7 @@ export default function Home() {
         <ContactSection profile={profile} />
 
         <footer className="border-t border-white/10 py-8 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} {profile.name} · Built with Next.js + FastAPI + OpenAI
+          © {new Date().getFullYear()} {profile.name} · Built with Next.js + FastAPI + Google Gemini
         </footer>
       </main>
 

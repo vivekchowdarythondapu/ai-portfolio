@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useRef } from "react";
 import type { Profile } from "@/lib/api";
 
@@ -17,6 +18,22 @@ export default function Hero({ profile }: { profile: Profile }) {
       <motion.div className="orb right-[8%] top-40 h-64 w-64 bg-cyan-500" style={{ y: orbY }} />
 
       <div className="relative mx-auto max-w-6xl px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6 inline-block rounded-full bg-gradient-to-tr from-indigo-500 via-cyan-400 to-purple-500 p-1 shadow-[0_0_50px_rgba(99,102,241,0.35)]"
+        >
+          <Image
+            src="/profile.jpg"
+            alt="Vivek Chowdary"
+            width={128}
+            height={128}
+            priority
+            className="h-24 w-24 rounded-full bg-white object-cover md:h-32 md:w-32"
+          />
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
