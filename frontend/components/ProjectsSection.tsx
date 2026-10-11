@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
 import SectionDecor from "@/components/SectionDecor";
+import TiltCard from "@/components/TiltCard";
 import { slugify, mediaUrl, type Profile } from "@/lib/api";
 
 const DECOR_GLYPHS = ["</>", "🚀", "💻", "⚡", "⚛️", "🤖", "🧩", "📊"];
@@ -23,12 +24,13 @@ export default function ProjectsSection({ profile }: { profile: Profile }) {
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         {profile.projects.map((project, i) => (
           <FadeIn key={project.id ?? project.name} delay={i * 0.1} className="h-full">
-            <motion.article
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-indigo-400/40"
-            >
-              <Link href={`/projects/${slugify(project.name)}`} className="flex flex-1 flex-col">
+            <TiltCard className="h-full">
+              <motion.article
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-indigo-400/40"
+              >
+                <Link href={`/projects/${slugify(project.name)}`} className="flex flex-1 flex-col">
                 {project.image && (
                   <img
                     src={mediaUrl(project.image)}
@@ -89,6 +91,7 @@ export default function ProjectsSection({ profile }: { profile: Profile }) {
                 </div>
               )}
             </motion.article>
+            </TiltCard>
           </FadeIn>
         ))}
       </div>

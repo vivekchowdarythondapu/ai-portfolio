@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
 import SectionDecor from "@/components/SectionDecor";
+import TiltCard from "@/components/TiltCard";
 import { mediaUrl, slugify, type Profile } from "@/lib/api";
 
 const DECOR_GLYPHS = ["🏆", "🏆", "📜", "🎖️", "🌟", "🎓", "🥇", "📈"];
@@ -36,7 +37,8 @@ export default function AchievementsSection({ profile }: { profile: Profile }) {
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {achievements.map((a, i) => (
             <FadeIn key={a.id ?? `${a.title}-${i}`} delay={(i % 3) * 0.1} className="h-full">
-              <Link href={`/achievements/${slugify(a.title)}`} className="block h-full">
+              <TiltCard className="h-full" tint="245,158,11">
+                <Link href={`/achievements/${slugify(a.title)}`} className="block h-full">
                 <motion.div
                   whileHover={{ y: -6 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -76,6 +78,7 @@ export default function AchievementsSection({ profile }: { profile: Profile }) {
                   </div>
                 </motion.div>
               </Link>
+              </TiltCard>
             </FadeIn>
           ))}
         </div>
