@@ -68,7 +68,7 @@ export default function Hero({ profile }: { profile: Profile }) {
             View my work
           </a>
           <a
-            href={`mailto:${profile.email}`}
+            href="#contact"
             className="rounded-full border border-white/15 px-7 py-3 font-medium text-gray-200 transition hover:-translate-y-0.5 hover:border-white/40"
           >
             Get in touch
