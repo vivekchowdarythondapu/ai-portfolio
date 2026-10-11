@@ -73,6 +73,14 @@ export default function Hero({ profile }: { profile: Profile }) {
           >
             Get in touch
           </a>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full border border-white/15 px-7 py-3 font-medium text-gray-200 transition hover:-translate-y-0.5 hover:border-white/40"
+          >
+            ⬇ Resume
+          </a>
         </motion.div>
       </div>
     </section>

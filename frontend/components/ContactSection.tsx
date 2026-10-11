@@ -46,6 +46,14 @@ export default function ContactSection({ profile }: { profile: Profile }) {
             >
               LinkedIn
             </a>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/30 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            >
+              ⬇ Download resume
+            </a>
           </div>
 
           <p className="mt-6 text-sm text-gray-500">

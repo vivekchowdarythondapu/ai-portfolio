@@ -1,6 +1,24 @@
 // Central API client for the FastAPI backend.
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+// Access code for the private content dashboard. Sent as a header with
+// every add/delete request; visitors without it can still read everything.
+let dashboardKey = "";
+
+export function setDashboardKey(key: string) {
+  dashboardKey = key;
+}
+
+function authHeaders(): Record<string, string> {
+  return dashboardKey ? { "X-Dashboard-Key": dashboardKey } : {};
+}
+
+/** Verify the current dashboard key against the backend. */
+export async function checkDashboardKey(): Promise<boolean> {
+  const res = await fetch(`${API_URL}/api/dashboard/check`, { headers: authHeaders() });
+  return res.ok;
+}
+
 export type AddedSkill = { id?: number; name: string; category: string; level?: number };
 
 export type Project = {
@@ -126,7 +144,7 @@ export async function addSkill(payload: {
 }): Promise<AddedSkill> {
   const res = await fetch(`${API_URL}/api/skills`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(await res.text());
@@ -142,7 +160,7 @@ export async function addProject(payload: {
 }): Promise<Project> {
   const res = await fetch(`${API_URL}/api/projects`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(await res.text());
@@ -150,7 +168,11 @@ export async function addProject(payload: {
 }
 
 export async function addAchievement(form: FormData): Promise<Achievement> {
-  const res = await fetch(`${API_URL}/api/achievements`, { method: "POST", body: form });
+  const res = await fetch(`${API_URL}/api/achievements`, {
+    method: "POST",
+    body: form,
+    headers: authHeaders(),
+  });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
@@ -159,6 +181,9 @@ export async function deleteItem(
   kind: "skills" | "projects" | "achievements",
   id: number,
 ): Promise<void> {
-  const res = await fetch(`${API_URL}/api/${kind}/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API_URL}/api/${kind}/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
   if (!res.ok) throw new Error(await res.text());
 }

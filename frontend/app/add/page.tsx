@@ -6,9 +6,11 @@ import {
   addAchievement,
   addProject,
   addSkill,
+  checkDashboardKey,
   deleteItem,
   fetchProfile,
   mediaUrl,
+  setDashboardKey,
   type Profile,
 } from "@/lib/api";
 
@@ -29,6 +31,12 @@ export default function AddPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // dashboard lock
+  const [unlocked, setUnlocked] = useState(false);
+  const [keyInput, setKeyInput] = useState("");
+  const [keyBusy, setKeyBusy] = useState(false);
+  const [keyError, setKeyError] = useState<string | null>(null);
 
   // skill form
   const [skillName, setSkillName] = useState("");
@@ -61,6 +69,41 @@ export default function AddPage() {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  // returning to the dashboard with a saved access code → verify silently
+  useEffect(() => {
+    const stored = localStorage.getItem("dashboard_key");
+    if (!stored) return;
+    setDashboardKey(stored);
+    checkDashboardKey()
+      .then((ok) => {
+        if (ok) setUnlocked(true);
+        else localStorage.removeItem("dashboard_key");
+      })
+      .catch(() => /* backend down; gate stays up */ {});
+  }, []);
+
+  async function tryUnlock() {
+    if (!keyInput.trim()) return;
+    setKeyBusy(true);
+    setKeyError(null);
+    setDashboardKey(keyInput.trim());
+    try {
+      if (await checkDashboardKey()) {
+        localStorage.setItem("dashboard_key", keyInput.trim());
+        setKeyInput("");
+        setUnlocked(true);
+      } else {
+        setKeyError("Wrong access code — try again.");
+        setDashboardKey("");
+      }
+    } catch {
+      setKeyError("Could not reach the backend — is it running on port 8000?");
+      setDashboardKey("");
+    } finally {
+      setKeyBusy(false);
+    }
+  }
 
   function notify(ok: boolean, text: string) {
     setMessage({ ok, text });
@@ -146,6 +189,43 @@ export default function AddPage() {
   }
 
   const addedSkills = Array.isArray(profile?.skills.added) ? profile!.skills.added : [];
+
+  if (!unlocked) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-6">
+        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+          <p className="text-4xl">🔒</p>
+          <h1 className="mt-4 text-xl font-bold">Private dashboard</h1>
+          <p className="mt-2 text-sm text-gray-400">
+            This is the portfolio&apos;s content dashboard. Enter the access code to continue —
+            visitors can browse the portfolio and chat with the AI without it.
+          </p>
+          <input
+            type="password"
+            className={`${inputCls} mt-5 text-center`}
+            value={keyInput}
+            onChange={(e) => setKeyInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void tryUnlock();
+            }}
+            placeholder="Access code"
+            autoFocus
+          />
+          {keyError && <p className="mt-3 text-sm text-red-300">{keyError}</p>}
+          <button
+            onClick={() => void tryUnlock()}
+            disabled={keyBusy || !keyInput.trim()}
+            className="mt-4 w-full rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:opacity-40"
+          >
+            {keyBusy ? "Checking…" : "Unlock"}
+          </button>
+          <Link href="/" className="mt-5 inline-block text-sm text-indigo-400 hover:text-indigo-300">
+            ← Back to portfolio
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">

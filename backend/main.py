@@ -10,7 +10,7 @@ import uuid
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -27,6 +27,28 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 ALLOWED_IMAGE_TYPES = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp", "image/gif": ".gif"}
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024  # 5 MB
+
+# Comma-separated list of frontend origins allowed to call this API.
+# After deploying, add your Vercel URL here (Render env var ALLOWED_ORIGINS).
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+    ).split(",")
+    if origin.strip()
+]
+
+# Access code for the content dashboard (/add). Visitors can read the
+# profile and chat with the AI, but only key-holders can change content.
+DASHBOARD_KEY = os.getenv("DASHBOARD_KEY", "").strip()
+
+
+def require_dashboard_key(x_dashboard_key: str = Header(default="")) -> None:
+    """Guard content-management routes (POST/DELETE)."""
+    if not DASHBOARD_KEY:
+        raise HTTPException(503, "dashboard locked — set DASHBOARD_KEY in backend/.env")
+    if x_dashboard_key != DASHBOARD_KEY:
+        raise HTTPException(401, "invalid dashboard key")
 
 
 def load_profile() -> dict:
@@ -96,7 +118,7 @@ app = FastAPI(title="AI Portfolio API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -125,15 +147,23 @@ def get_profile() -> dict:
     return build_profile()
 
 
+@app.get("/api/dashboard/check")
+def dashboard_check(x_dashboard_key: str = Header(default="")) -> dict:
+    """Lets the dashboard verify an access code without changing anything."""
+    if DASHBOARD_KEY and x_dashboard_key == DASHBOARD_KEY:
+        return {"ok": True}
+    raise HTTPException(401, "invalid dashboard key")
+
+
 # ---------------------------------------------------------------- CRUD: skills
 
 
-@app.post("/api/skills")
+@app.post("/api/skills", dependencies=[Depends(require_dashboard_key)])
 def create_skill(payload: SkillIn) -> dict:
     return store.add("skills", payload.model_dump())
 
 
-@app.delete("/api/skills/{item_id}")
+@app.delete("/api/skills/{item_id}", dependencies=[Depends(require_dashboard_key)])
 def delete_skill(item_id: int) -> dict:
     if not store.remove("skills", item_id):
         raise HTTPException(404, "skill not found")
@@ -143,14 +173,14 @@ def delete_skill(item_id: int) -> dict:
 # ---------------------------------------------------------------- CRUD: projects
 
 
-@app.post("/api/projects")
+@app.post("/api/projects", dependencies=[Depends(require_dashboard_key)])
 def create_project(payload: ProjectIn) -> dict:
     item = payload.model_dump()
     item["tech"] = [t.strip() for t in payload.tech.split(",") if t.strip()]
     return store.add("projects", item)
 
 
-@app.delete("/api/projects/{item_id}")
+@app.delete("/api/projects/{item_id}", dependencies=[Depends(require_dashboard_key)])
 def delete_project(item_id: int) -> dict:
     if not store.remove("projects", item_id):
         raise HTTPException(404, "project not found")
@@ -172,7 +202,7 @@ async def _save_image(file: UploadFile) -> str:
     return f"/uploads/{name}"
 
 
-@app.post("/api/achievements")
+@app.post("/api/achievements", dependencies=[Depends(require_dashboard_key)])
 async def create_achievement(
     title: str = Form(..., max_length=120),
     description: str = Form("", max_length=600),
@@ -194,7 +224,7 @@ async def create_achievement(
     return store.add("achievements", item)
 
 
-@app.delete("/api/achievements/{item_id}")
+@app.delete("/api/achievements/{item_id}", dependencies=[Depends(require_dashboard_key)])
 def delete_achievement(item_id: int) -> dict:
     if not store.remove("achievements", item_id):
         raise HTTPException(404, "achievement not found")
