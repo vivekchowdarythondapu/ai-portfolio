@@ -8,9 +8,29 @@ type UiMessage = { role: "user" | "assistant"; content: string };
 
 const SUGGESTIONS = [
   "What are his strongest skills?",
-  "Tell me about the AI Portfolio project",
-  "Does he have experience with Docker?",
+  "Tell me about the AI Code Reviewer project",
+  "Go to his skills section",
+  "Show me his achievements",
 ];
+
+/** Sections the AI can navigate to, mapped to DOM ids. */
+const NAV_TARGETS = ["top", "skills", "projects", "achievements", "education", "experience", "contact"];
+
+/** Hidden token the AI appends, e.g. [NAVIGATE:skills] — stripped before display. */
+const NAV_TOKEN = /\[NAVIGATE:([a-z]+)\]/g;
+
+function stripNav(text: string): string {
+  return text.replace(NAV_TOKEN, "").replace(/\s+/g, " ").trim();
+}
+
+function navigateTo(section: string) {
+  const el = document.getElementById(section);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  el.classList.remove("section-flash");
+  void el.offsetWidth; // restart the CSS animation
+  el.classList.add("section-flash");
+}
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -20,7 +40,7 @@ export default function ChatWidget() {
     {
       role: "assistant",
       content:
-        "Hi! I'm the AI assistant on this portfolio. Ask me anything about this developer's skills, projects or experience.",
+        "Hi! I'm the AI assistant on Vivek's portfolio. Ask me anything about his skills, projects or experience — or just say \"go to his projects\" and I'll take you there.",
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -34,7 +54,7 @@ export default function ChatWidget() {
     if (!question || busy) return;
 
     const history: ChatMessage[] = [
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
+      ...messages.map((m) => ({ role: m.role, content: stripNav(m.content) })),
       { role: "user", content: question },
     ];
 
@@ -42,12 +62,15 @@ export default function ChatWidget() {
     setBusy(true);
     setMessages((prev) => [...prev, { role: "user", content: question }, { role: "assistant", content: "" }]);
 
+    let raw = "";
     try {
       await streamChat(history, (delta) => {
+        raw += delta;
+        const visible = stripNav(raw);
         setMessages((prev) => {
           const next = [...prev];
           const last = next[next.length - 1];
-          next[next.length - 1] = { ...last, content: last.content + delta };
+          next[next.length - 1] = { ...last, content: visible || "…" };
           return next;
         });
       });
@@ -63,6 +86,11 @@ export default function ChatWidget() {
       });
     } finally {
       setBusy(false);
+      // The AI may have requested navigation — fly to that section.
+      const match = raw.match(/\[NAVIGATE:([a-z]+)\]/);
+      if (match && NAV_TARGETS.includes(match[1])) {
+        navigateTo(match[1]);
+      }
     }
   }
 

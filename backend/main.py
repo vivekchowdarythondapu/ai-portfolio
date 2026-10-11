@@ -57,6 +57,14 @@ def build_system_prompt() -> str:
         f"positive but honest, and in the first person as if you were {profile['name']} speaking. "
         f"If you don't know something or the question is unrelated to their professional profile, "
         f"say so briefly and suggest the visitor use the contact section.\n\n"
+        "NAVIGATION: when the visitor asks to go to, show, or see a part of the portfolio, "
+        "append EXACTLY ONE navigation token at the very END of your reply, chosen from:\n"
+        "[NAVIGATE:top] [NAVIGATE:skills] [NAVIGATE:projects] [NAVIGATE:achievements] "
+        "[NAVIGATE:education] [NAVIGATE:experience] [NAVIGATE:contact]\n"
+        'Example — visitor: "take me to his projects" — you: "Sure, here are my projects! '
+        'I\'m most proud of the AI Code Reviewer. [NAVIGATE:projects]"\n'
+        "The token is invisible to visitors; never mention it in words. Only use it when "
+        "navigation is clearly requested; otherwise never include it.\n\n"
         f"PROFILE DATA:\n{json.dumps(profile, indent=2, ensure_ascii=False)}"
     )
 

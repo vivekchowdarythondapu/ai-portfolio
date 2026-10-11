@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,8 @@ const LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 25, restDelta: 0.001 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -29,6 +32,11 @@ export default function Navbar() {
           : "border-b border-transparent"
       }`}
     >
+      {/* scroll progress bar */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gradient-to-r from-indigo-500 via-cyan-400 to-purple-500"
+        style={{ scaleX: progress }}
+      />
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#top" className="text-lg font-bold tracking-tight">
           <span className="text-gradient">{"<Dev />"}</span>

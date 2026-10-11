@@ -54,7 +54,7 @@ export default function Home() {
         <AchievementsSection profile={profile} />
 
         {/* Experience */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
+        <section id="experience" className="mx-auto max-w-6xl px-6 py-20">
           <FadeIn>
             <h2 className="text-3xl font-bold md:text-4xl">
               Experience<span className="text-gradient">.</span>

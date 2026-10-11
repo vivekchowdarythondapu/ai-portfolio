@@ -1,14 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import type { Profile } from "@/lib/api";
 
 export default function Hero({ profile }: { profile: Profile }) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const titleY = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const orbY = useTransform(scrollYProgress, [0, 1], [0, 180]);
   return (
-    <section id="top" className="relative overflow-hidden pb-24 pt-36">
+    <section id="top" ref={ref} className="relative overflow-hidden pb-24 pt-36">
       {/* floating gradient orbs */}
-      <div className="orb left-[10%] top-24 h-72 w-72 bg-indigo-600" />
-      <div className="orb right-[8%] top-40 h-64 w-64 bg-cyan-500" style={{ animationDelay: "-4s" }} />
+      <motion.div className="orb left-[10%] top-24 h-72 w-72 bg-indigo-600" style={{ y: orbY }} />
+      <motion.div className="orb right-[8%] top-40 h-64 w-64 bg-cyan-500" style={{ y: orbY }} />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.p
@@ -24,6 +30,7 @@ export default function Hero({ profile }: { profile: Profile }) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
+          style={{ y: titleY }}
           className="text-5xl font-extrabold leading-tight tracking-tight md:text-7xl"
         >
           Hi, I&apos;m <span className="text-gradient">{profile.name}</span>
@@ -42,6 +49,7 @@ export default function Hero({ profile }: { profile: Profile }) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+          style={{ y: textY }}
           className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-400"
         >
           {profile.summary}

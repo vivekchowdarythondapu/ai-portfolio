@@ -67,6 +67,18 @@ body {
   animation: pulse-ring 2s ease-out infinite;
 }
 
+/* Brief glow pulse on a section the AI navigated to */
+@keyframes section-flash {
+  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.55); }
+  70% { box-shadow: 0 0 0 18px rgba(99, 102, 241, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.section-flash {
+  animation: section-flash 1.6s ease-out 1;
+  border-radius: 1rem;
+}
+
 /* Thin scrollbars inside the chat panel */
 .thin-scrollbar::-webkit-scrollbar {
   width: 6px;
