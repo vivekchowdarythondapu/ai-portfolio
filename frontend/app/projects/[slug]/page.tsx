@@ -120,17 +120,29 @@ function ProjectView({ project, theme, ownerName }: { project: Project; theme: T
             ))}
           </div>
 
-          {project.link && (
-            <div className="mt-8">
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:brightness-110"
-                style={{ background: `linear-gradient(90deg, ${theme.c1}, ${theme.c2})`, boxShadow: `0 10px 30px -10px ${theme.c1}80` }}
-              >
-                View code ↗
-              </a>
+          {(project.demo || project.link) && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:brightness-110"
+                  style={{ background: `linear-gradient(90deg, ${theme.c1}, ${theme.c2})`, boxShadow: `0 10px 30px -10px ${theme.c1}80` }}
+                >
+                  🚀 Live demo ↗
+                </a>
+              )}
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-gray-200 transition hover:-translate-y-0.5 hover:border-white/40"
+                >
+                  View code ↗
+                </a>
+              )}
             </div>
           )}
         </div>

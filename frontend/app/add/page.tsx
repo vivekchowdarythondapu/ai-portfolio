@@ -48,6 +48,7 @@ export default function AddPage() {
   const [projDesc, setProjDesc] = useState("");
   const [projTech, setProjTech] = useState("");
   const [projLink, setProjLink] = useState("");
+  const [projDemo, setProjDemo] = useState("");
   const [projDetails, setProjDetails] = useState("");
 
   // achievement form
@@ -139,12 +140,14 @@ export default function AddPage() {
         description: projDesc.trim(),
         tech: projTech,
         link: projLink,
+        demo: projDemo,
         details: projDetails.trim(),
       });
       setProjName("");
       setProjDesc("");
       setProjTech("");
       setProjLink("");
+      setProjDemo("");
       setProjDetails("");
       notify(true, "Project added 🚀");
       await refresh();
@@ -336,14 +339,18 @@ export default function AddPage() {
               <label className={labelCls}>Full story (optional — shown on the detail page, blank lines separate paragraphs)</label>
               <textarea className={inputCls} rows={4} value={projDetails} onChange={(e) => setProjDetails(e.target.value)} placeholder="The problem it solves, how you built it, what you learned…" />
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <label className={labelCls}>Tech (comma-separated)</label>
                 <input className={inputCls} value={projTech} onChange={(e) => setProjTech(e.target.value)} placeholder="React, FastAPI, Postgres" />
               </div>
               <div>
-                <label className={labelCls}>Link (optional)</label>
+                <label className={labelCls}>GitHub link (optional)</label>
                 <input className={inputCls} value={projLink} onChange={(e) => setProjLink(e.target.value)} placeholder="https://github.com/…" />
+              </div>
+              <div>
+                <label className={labelCls}>Live demo URL (optional)</label>
+                <input className={inputCls} value={projDemo} onChange={(e) => setProjDemo(e.target.value)} placeholder="https://….vercel.app" />
               </div>
             </div>
             <button

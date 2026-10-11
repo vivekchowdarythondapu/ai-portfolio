@@ -23,12 +23,12 @@ export default function ProjectsSection({ profile }: { profile: Profile }) {
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         {profile.projects.map((project, i) => (
           <FadeIn key={project.id ?? project.name} delay={i * 0.1} className="h-full">
-            <Link href={`/projects/${slugify(project.name)}`} className="block h-full">
-              <motion.article
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-indigo-400/40"
-              >
+            <motion.article
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-indigo-400/40"
+            >
+              <Link href={`/projects/${slugify(project.name)}`} className="flex flex-1 flex-col">
                 {project.image && (
                   <img
                     src={mediaUrl(project.image)}
@@ -62,8 +62,33 @@ export default function ProjectsSection({ profile }: { profile: Profile }) {
                     ))}
                   </div>
                 </div>
-              </motion.article>
-            </Link>
+              </Link>
+
+              {(project.demo || project.link) && (
+                <div className="flex flex-wrap gap-3 border-t border-white/10 px-6 py-4">
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full bg-indigo-600 px-4 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-500"
+                    >
+                      🌐 Live demo ↗
+                    </a>
+                  )}
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border border-white/15 px-4 py-1.5 text-xs font-medium text-gray-300 transition hover:border-white/40"
+                    >
+                      GitHub ↗
+                    </a>
+                  )}
+                </div>
+              )}
+            </motion.article>
           </FadeIn>
         ))}
       </div>

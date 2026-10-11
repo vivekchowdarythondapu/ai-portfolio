@@ -110,7 +110,8 @@ class ProjectIn(BaseModel):
     name: str = Field(min_length=1, max_length=120)
     description: str = Field(min_length=1, max_length=600)
     tech: str = Field(default="", max_length=300)  # comma-separated
-    link: str = Field(default="", max_length=300)
+    link: str = Field(default="", max_length=300)  # source code (GitHub)
+    demo: str = Field(default="", max_length=300)  # live deployment URL
     details: str = Field(default="", max_length=4000)  # long-form text for the detail page
 
 

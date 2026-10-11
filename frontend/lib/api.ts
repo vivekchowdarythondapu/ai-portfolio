@@ -26,7 +26,10 @@ export type Project = {
   name: string;
   description: string;
   tech: string[];
+  /** Source code URL (GitHub) */
   link?: string;
+  /** Live deployment URL (Vercel/Render/Netlify…) */
+  demo?: string;
   image?: string;
   details?: string;
 };
@@ -156,6 +159,7 @@ export async function addProject(payload: {
   description: string;
   tech: string;
   link: string;
+  demo: string;
   details: string;
 }): Promise<Project> {
   const res = await fetch(`${API_URL}/api/projects`, {
