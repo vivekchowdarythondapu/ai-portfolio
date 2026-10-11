@@ -14,10 +14,10 @@ from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from openai import OpenAI
 from pydantic import BaseModel, Field
 
 import store
+from providers import ProviderError, get_provider
 
 load_dotenv()
 
@@ -26,8 +26,6 @@ UPLOAD_DIR = BASE_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 PROFILE = json.loads((BASE_DIR / "profile.json").read_text(encoding="utf-8"))
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 ALLOWED_IMAGE_TYPES = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp", "image/gif": ".gif"}
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024  # 5 MB
@@ -98,10 +96,12 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 @app.get("/api/health")
 def health() -> dict:
+    provider = get_provider()
     return {
         "status": "ok",
-        "model": OPENAI_MODEL,
-        "api_key_configured": bool(os.getenv("OPENAI_API_KEY")),
+        "provider": provider.name,
+        "model": provider.model,
+        "api_key_configured": provider.key_configured,
     }
 
 
@@ -182,30 +182,23 @@ def delete_achievement(item_id: int) -> dict:
 
 @app.post("/api/chat")
 def chat(req: ChatRequest) -> StreamingResponse:
-    if not os.getenv("OPENAI_API_KEY"):
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not set on the server")
+    provider = get_provider()
+    if not provider.key_configured:
+        raise HTTPException(
+            status_code=500,
+            detail=f"No API key configured for provider '{provider.name}' — see backend/.env",
+        )
 
-    client = OpenAI()
-
-    upstream = [
-        {"role": "system", "content": build_system_prompt()},
-        *[m.model_dump() for m in req.messages],
-    ]
+    system_prompt = build_system_prompt()
+    history = [m.model_dump() for m in req.messages]
 
     def event_stream():
         try:
-            stream = client.chat.completions.create(
-                model=OPENAI_MODEL,
-                messages=upstream,
-                stream=True,
-                temperature=0.4,
-                max_tokens=300,
-            )
-            for chunk in stream:
-                delta = chunk.choices[0].delta.content
-                if delta:
-                    yield f"data: {json.dumps({'text': delta})}\n\n"
-        except Exception as exc:
+            for text in provider.stream(system_prompt, history):
+                yield f"data: {json.dumps({'text': text})}\n\n"
+        except ProviderError as exc:
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+        except Exception as exc:  # never break the SSE stream mid-flight
             yield f"data: {json.dumps({'error': str(exc)})}\n\n"
         yield "data: [DONE]\n\n"
 
