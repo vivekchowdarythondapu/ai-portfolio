@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
+import SectionDecor from "@/components/SectionDecor";
 import type { AddedSkill, Profile } from "@/lib/api";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -24,7 +25,8 @@ export default function SkillsSection({ profile }: { profile: Profile }) {
     : [];
 
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-20">
+    <section id="skills" className="relative mx-auto max-w-6xl px-6 py-20">
+      <SectionDecor c1="#818cf8" c2="#22d3ee" glyphs={["🛠️", "🧩", "⚡", "⚙️", "💻", "🔍"]} />
       <FadeIn>
         <h2 className="text-3xl font-bold md:text-4xl">
           Skills<span className="text-gradient">.</span>

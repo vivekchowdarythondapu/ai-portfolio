@@ -10,6 +10,7 @@ export type Project = {
   tech: string[];
   link?: string;
   image?: string;
+  details?: string;
 };
 
 export type Achievement = {
@@ -18,7 +19,17 @@ export type Achievement = {
   description?: string;
   date?: string;
   image?: string;
+  images?: string[];
+  details?: string;
 };
+
+/** URL-friendly slug for detail-page routes (title → /projects/slug). */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export type Experience = {
   role: string;
@@ -127,6 +138,7 @@ export async function addProject(payload: {
   description: string;
   tech: string;
   link: string;
+  details: string;
 }): Promise<Project> {
   const res = await fetch(`${API_URL}/api/projects`, {
     method: "POST",

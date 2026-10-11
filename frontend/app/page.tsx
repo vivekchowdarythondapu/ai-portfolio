@@ -11,6 +11,8 @@ import Navbar from "@/components/Navbar";
 import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
 import { fetchProfile, type Profile } from "@/lib/api";
+import ParticleField from "@/components/ParticleField";
+import SectionDecor from "@/components/SectionDecor";
 
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -45,6 +47,7 @@ export default function Home() {
 
   return (
     <>
+      <ParticleField />
       <Navbar />
       <main>
         <Hero profile={profile} />
@@ -54,7 +57,8 @@ export default function Home() {
         <AchievementsSection profile={profile} />
 
         {/* Experience */}
-        <section id="experience" className="mx-auto max-w-6xl px-6 py-20">
+        <section id="experience" className="relative mx-auto max-w-6xl px-6 py-20">
+          <SectionDecor c1="#22d3ee" c2="#818cf8" glyphs={["🔬", "🧠", "📡", "📝", "💡", "🎓"]} />
           <FadeIn>
             <h2 className="text-3xl font-bold md:text-4xl">
               Experience<span className="text-gradient">.</span>

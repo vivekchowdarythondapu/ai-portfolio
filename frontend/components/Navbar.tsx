@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#achievements", label: "Achievements" },
-  { href: "#education", label: "Education" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#achievements", label: "Achievements" },
+  { href: "/#education", label: "Education" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -38,19 +38,15 @@ export default function Navbar() {
         style={{ scaleX: progress }}
       />
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#top" className="text-lg font-bold tracking-tight">
+        <Link href="/#top" className="text-lg font-bold tracking-tight">
           <span className="text-gradient">{"<Dev />"}</span>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-7 text-sm text-gray-300 md:flex">
           {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="transition-colors hover:text-white"
-            >
+            <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
               {l.label}
-            </a>
+            </Link>
           ))}
           <Link
             href="/add"

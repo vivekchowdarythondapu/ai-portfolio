@@ -40,13 +40,15 @@ export default function AddPage() {
   const [projDesc, setProjDesc] = useState("");
   const [projTech, setProjTech] = useState("");
   const [projLink, setProjLink] = useState("");
+  const [projDetails, setProjDetails] = useState("");
 
   // achievement form
   const [achTitle, setAchTitle] = useState("");
   const [achDesc, setAchDesc] = useState("");
   const [achDate, setAchDate] = useState("");
-  const [achFile, setAchFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [achDetails, setAchDetails] = useState("");
+  const [achFiles, setAchFiles] = useState<File[]>([]);
+  const [achPreviews, setAchPreviews] = useState<string[]>([]);
 
   const refresh = useCallback(async () => {
     try {
@@ -94,14 +96,23 @@ export default function AddPage() {
         description: projDesc.trim(),
         tech: projTech,
         link: projLink,
+        details: projDetails.trim(),
       });
       setProjName("");
       setProjDesc("");
       setProjTech("");
       setProjLink("");
+      setProjDetails("");
       notify(true, "Project added 🚀");
       await refresh();
     });
+  }
+
+  function pickFiles(list: FileList | null) {
+    const files = Array.from(list ?? []).filter((f) => f.type.startsWith("image/")).slice(0, 6);
+    achPreviews.forEach((url) => URL.revokeObjectURL(url));
+    setAchFiles(files);
+    setAchPreviews(files.map((f) => URL.createObjectURL(f)));
   }
 
   async function submitAchievement() {
@@ -111,13 +122,16 @@ export default function AddPage() {
       form.append("title", achTitle.trim());
       form.append("description", achDesc.trim());
       form.append("date", achDate.trim());
-      if (achFile) form.append("image", achFile);
+      form.append("details", achDetails.trim());
+      for (const f of achFiles) form.append("images", f);
       await addAchievement(form);
       setAchTitle("");
       setAchDesc("");
       setAchDate("");
-      setAchFile(null);
-      setPreview(null);
+      setAchDetails("");
+      setAchFiles([]);
+      achPreviews.forEach((url) => URL.revokeObjectURL(url));
+      setAchPreviews([]);
       notify(true, "Achievement added 🏆");
       await refresh();
     });
@@ -235,8 +249,12 @@ export default function AddPage() {
               <input className={inputCls} value={projName} onChange={(e) => setProjName(e.target.value)} placeholder="e.g. Expense Tracker" />
             </div>
             <div>
-              <label className={labelCls}>Description</label>
-              <textarea className={inputCls} rows={3} value={projDesc} onChange={(e) => setProjDesc(e.target.value)} placeholder="What it does and what you used…" />
+              <label className={labelCls}>Description (short — shown on the card)</label>
+              <textarea className={inputCls} rows={3} value={projDesc} onChange={(e) => setProjDesc(e.target.value)} placeholder="One-paragraph summary of what it does…" />
+            </div>
+            <div>
+              <label className={labelCls}>Full story (optional — shown on the detail page, blank lines separate paragraphs)</label>
+              <textarea className={inputCls} rows={4} value={projDetails} onChange={(e) => setProjDetails(e.target.value)} placeholder="The problem it solves, how you built it, what you learned…" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -281,27 +299,32 @@ export default function AddPage() {
                 <input className={inputCls} value={achDate} onChange={(e) => setAchDate(e.target.value)} placeholder="Mar 2025" />
               </div>
               <div>
-                <label className={labelCls}>Photo (png/jpg/webp, max 5 MB)</label>
+                <label className={labelCls}>Photos (png/jpg/webp, up to 6, max 5 MB each)</label>
                 <input
                   type="file"
+                  multiple
                   accept="image/png,image/jpeg,image/webp,image/gif"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] ?? null;
-                    setAchFile(file);
-                    setPreview(file ? URL.createObjectURL(file) : null);
-                  }}
+                  onChange={(e) => pickFiles(e.target.files)}
                   className="w-full text-sm text-gray-400 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-indigo-500"
                 />
               </div>
             </div>
             <div>
-              <label className={labelCls}>Description (optional)</label>
-              <textarea className={inputCls} rows={2} value={achDesc} onChange={(e) => setAchDesc(e.target.value)} placeholder="Details about the achievement…" />
+              <label className={labelCls}>Description (optional — shown on the card)</label>
+              <textarea className={inputCls} rows={2} value={achDesc} onChange={(e) => setAchDesc(e.target.value)} placeholder="One-line summary of the achievement…" />
+            </div>
+            <div>
+              <label className={labelCls}>Full story (optional — shown on the detail page, blank lines separate paragraphs)</label>
+              <textarea className={inputCls} rows={4} value={achDetails} onChange={(e) => setAchDetails(e.target.value)} placeholder="Where it happened, when, what was involved, why it matters…" />
             </div>
 
-            {preview && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="preview" className="h-40 rounded-xl object-cover ring-1 ring-white/10" />
+            {achPreviews.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {achPreviews.map((url) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={url} src={url} alt="preview" className="h-28 w-28 rounded-xl object-cover ring-1 ring-white/10" />
+                ))}
+              </div>
             )}
 
             <button

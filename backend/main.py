@@ -89,6 +89,7 @@ class ProjectIn(BaseModel):
     description: str = Field(min_length=1, max_length=600)
     tech: str = Field(default="", max_length=300)  # comma-separated
     link: str = Field(default="", max_length=300)
+    details: str = Field(default="", max_length=4000)  # long-form text for the detail page
 
 
 app = FastAPI(title="AI Portfolio API", version="1.0.0")
@@ -176,11 +177,20 @@ async def create_achievement(
     title: str = Form(..., max_length=120),
     description: str = Form("", max_length=600),
     date: str = Form("", max_length=40),
+    details: str = Form("", max_length=8000),
     image: UploadFile | None = File(None),
+    images: list[UploadFile] = File(default=[]),
 ) -> dict:
     item = {"title": title, "description": description, "date": date}
-    if image is not None and image.filename:
-        item["image"] = await _save_image(image)
+    if details.strip():
+        item["details"] = details
+    saved: list[str] = []
+    for f in [image, *images]:
+        if f is not None and f.filename:
+            saved.append(await _save_image(f))
+    if saved:
+        item["image"] = saved[0]  # card thumbnail
+        item["images"] = saved  # full gallery for the detail page
     return store.add("achievements", item)
 
 

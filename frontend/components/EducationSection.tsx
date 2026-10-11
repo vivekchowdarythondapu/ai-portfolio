@@ -1,13 +1,15 @@
 "use client";
 
 import FadeIn from "@/components/FadeIn";
+import SectionDecor from "@/components/SectionDecor";
 import type { Education } from "@/lib/api";
 
 export default function EducationSection({ education }: { education: Education[] }) {
   if (!education || education.length === 0) return null;
 
   return (
-    <section id="education" className="mx-auto max-w-6xl px-6 py-20">
+    <section id="education" className="relative mx-auto max-w-6xl px-6 py-20">
+      <SectionDecor c1="#2dd4bf" c2="#38bdf8" glyphs={["🎓", "📚", "🏫", "✏️", "🔭", "📖"]} />
       <FadeIn>
         <h2 className="text-3xl font-bold md:text-4xl">
           Education<span className="text-gradient">.</span>
