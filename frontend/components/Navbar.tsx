@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -39,8 +40,17 @@ export default function Navbar() {
         style={{ scaleX: progress }}
       />
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/#top" className="text-lg font-bold tracking-tight">
-          <span className="text-gradient">{"<Dev />"}</span>
+        <Link href="/#top" className="flex items-center gap-2.5" aria-label="Back to top">
+          <Image
+            src="/profile.jpg"
+            alt="Vivek Chowdary"
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-full object-cover ring-2 ring-indigo-400/40 transition hover:ring-indigo-400"
+          />
+          <span className="text-sm font-bold tracking-tight text-gray-100 md:block">
+            Vivek Chowdary
+          </span>
         </Link>
 
         {/* desktop links */}
