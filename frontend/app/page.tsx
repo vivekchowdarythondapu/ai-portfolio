@@ -5,6 +5,7 @@ import AchievementsSection from "@/components/AchievementsSection";
 import ChatWidget from "@/components/ChatWidget";
 import ContactSection from "@/components/ContactSection";
 import FadeIn from "@/components/FadeIn";
+import EducationSection from "@/components/EducationSection";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import ProjectsSection from "@/components/ProjectsSection";
@@ -79,6 +80,8 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        <EducationSection education={profile.education ?? []} />
 
         <ContactSection profile={profile} />
 

@@ -25,21 +25,26 @@ BASE_DIR = Path(__file__).parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-PROFILE = json.loads((BASE_DIR / "profile.json").read_text(encoding="utf-8"))
-
 ALLOWED_IMAGE_TYPES = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp", "image/gif": ".gif"}
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024  # 5 MB
 
 
+def load_profile() -> dict:
+    """Read profile.json fresh on every request so edits apply instantly."""
+    return json.loads((BASE_DIR / "profile.json").read_text(encoding="utf-8"))
+
+
 def build_profile() -> dict:
-    """Curated template merged with everything added through the UI."""
+    """Curated profile merged with everything added through the UI."""
+    profile = load_profile()
     added = store.get_all()
     return {
-        **PROFILE,
-        "skills": {**PROFILE["skills"], "added": added["skills"]},
-        "projects": PROFILE["projects"] + added["projects"],
-        "achievements": added["achievements"],
-        "experience": PROFILE["experience"],
+        **profile,
+        "skills": {**profile.get("skills", {}), "added": added["skills"]},
+        "projects": profile.get("projects", []) + added["projects"],
+        "achievements": profile.get("achievements", []) + added["achievements"],
+        "experience": profile.get("experience", []),
+        "education": profile.get("education", []),
     }
 
 

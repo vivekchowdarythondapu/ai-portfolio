@@ -27,6 +27,13 @@ export type Experience = {
   highlights: string[];
 };
 
+export type Education = {
+  degree: string;
+  school: string;
+  period: string;
+  detail?: string;
+};
+
 export type Profile = {
   name: string;
   title: string;
@@ -45,7 +52,8 @@ export type Profile = {
   projects: Project[];
   achievements: Achievement[];
   experience: Experience[];
-  contact: { github: string; linkedin: string };
+  education?: Education[];
+  contact: { github: string; linkedin: string; phone?: string };
 };
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };

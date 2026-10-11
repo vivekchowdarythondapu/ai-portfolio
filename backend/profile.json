@@ -1,33 +1,98 @@
 {
-  "name": "Your Name",
-  "title": "Full-Stack & AI Engineer",
-  "location": "City, Country",
-  "email": "you@example.com",
-  "summary": "Full-stack developer building web applications with modern AI integration. Experienced in TypeScript, React/Next.js, Python, and FastAPI, with hands-on experience wiring LLM APIs into production features.",
+  "name": "Vivek Chowdary",
+  "title": "CSE Student & Full-Stack Developer",
+  "location": "Nandigama, India",
+  "email": "vivekchowdarythondapu@gmail.com",
+  "summary": "B.Tech CSE student with hands-on experience building full-stack MERN applications, REST APIs and ML models. Published IEEE conference paper author (ICoECIT 2026) with research experience in predictive healthcare modelling. Strong foundation in DSA, OOP and core CS fundamentals — seeking a Software Engineer role to design, build and ship scalable software.",
   "skills": {
-    "languages": ["TypeScript", "JavaScript", "Python", "SQL"],
-    "frontend": ["React", "Next.js", "Tailwind CSS"],
-    "backend": ["FastAPI", "Node.js", "REST APIs"],
-    "ai": ["OpenAI API", "RAG", "Prompt engineering"],
-    "tools": ["Git", "Docker", "PostgreSQL"]
+    "languages": ["C++", "Python", "JavaScript", "Java"],
+    "frontend": ["React.js", "Next.js", "HTML5", "CSS3", "Tailwind CSS"],
+    "backend": ["Node.js", "Express.js", "MERN Stack", "REST APIs", "Socket.IO"],
+    "databases": ["MongoDB", "MySQL"],
+    "ai": ["NumPy", "Pandas", "Matplotlib", "Scikit-learn"],
+    "core": ["Data Structures & Algorithms", "OOP", "DBMS", "Operating Systems", "Computer Networks"],
+    "tools": ["Git", "GitHub", "VS Code", "Postman", "Vercel", "Render"]
   },
   "projects": [
     {
+      "name": "Quantum Aggregate Signature for VANET",
+      "description": "Independent reproduction of a 2025 research paper on quantum aggregate signatures for vehicular networks. Built a quantum simulator in Python/NumPy (BB84 QKD, entanglement-based signatures, aggregation, teleportation), formally verified the protocol with Scyther — 17/17 secrecy and agreement claims, finding and repairing an attack in the authors' own model — and reproduced the performance evaluation in OMNeT++ with 46 vehicles and zero message loss. Also uncovered a public-forgery weakness in the published scheme and proposed a hardened variant.",
+      "tech": ["Python", "NumPy", "pytest", "Scyther", "OMNeT++", "C++"]
+    },
+    {
+      "name": "Smart Campus Lost & Found Portal",
+      "description": "Full-stack portal that automatically matches lost and found reports across a 5,000+ student campus. JWT authentication, Cloudinary photo uploads, a cosine-similarity matching engine with an 80%+ match rate, real-time Socket.IO chat to arrange handovers and a Recharts analytics dashboard. Deployed on Vercel/Render with sub-2s page loads.",
+      "tech": ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "JWT", "Cloudinary", "Recharts"]
+    },
+    {
+      "name": "AI Code Reviewer",
+      "description": "AI-powered code review platform — paste code and get instant feedback. Monaco Editor (the editor behind VS Code) in the browser, Groq's LLaMA 3.3 70B for fast reviews, Piston API for sandboxed multi-language execution and Socket.IO for real-time updates. Frontend on Vercel, backend on Render.",
+      "tech": ["MERN", "Groq API", "Monaco Editor", "Socket.IO", "Piston API"]
+    },
+    {
+      "name": "ClientSync",
+      "description": "Responsive client-management system spanning four modules — clients, projects, invoices and payments — with an Express.js/Node.js backend, 5+ RESTful APIs with full CRUD operations and dashboard analytics, plus a React + Tailwind CSS front end that stays consistent across screen sizes.",
+      "tech": ["React", "Vite", "Node.js", "Express", "Tailwind CSS", "REST APIs"],
+      "link": "https://github.com/vivekchowdarythondapu/clientsync"
+    },
+    {
       "name": "AI Portfolio",
-      "description": "Full-stack portfolio site with an AI chat assistant. FastAPI backend streams OpenAI responses; Next.js frontend renders the chat widget.",
-      "tech": ["Next.js", "TypeScript", "FastAPI", "OpenAI API", "Tailwind CSS"]
+      "description": "Full-stack portfolio with a live AI assistant: FastAPI backend streams responses from a pluggable LLM provider (free Gemini tier / OpenAI) over SSE, Next.js front end with framer-motion animations, and a content dashboard with REST CRUD and image uploads.",
+      "tech": ["Next.js", "TypeScript", "FastAPI", "Gemini API", "Tailwind CSS"]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "IEEE Conference Paper Author",
+      "description": "\"X-Stroke: An Explainable AI-Using Machine Learning Model for Heart Stroke Prediction\" published at ICoECIT 2026 (IEEE Xplore).",
+      "date": "2026"
+    },
+    {
+      "title": "MongoDB Associate Developer Certification",
+      "description": "Certified by MongoDB University.",
+      "date": "2025"
+    },
+    {
+      "title": "Oracle Certified Java SE 17 Developer",
+      "description": "Professional Oracle certification covering the Java SE 17 curriculum.",
+      "date": ""
     }
   ],
   "experience": [
     {
-      "role": "Your Role",
-      "company": "Company Name",
-      "period": "20XX - Present",
-      "highlights": ["Replace with a real achievement, ideally with a number."]
+      "role": "Research Intern",
+      "company": "GNITS",
+      "period": "Jul 2025 – Jan 2026",
+      "highlights": [
+        "Developed a machine-learning research project on Heart Stroke Prediction, applying classification algorithms to medical datasets",
+        "Built data preprocessing and feature-selection pipelines that improved model accuracy and reliability across multiple algorithms",
+        "Optimized model performance through iterative testing, contributing to a published IEEE conference paper (ICoECIT 2026)"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science & Engineering",
+      "school": "SRM University AP, Andhra Pradesh",
+      "period": "2023 – 2027",
+      "detail": "CGPA: 7.95"
+    },
+    {
+      "degree": "Intermediate (MPC)",
+      "school": "Sri Chaitanya Junior College, Vijayawada",
+      "period": "2021 – 2023",
+      "detail": "96.5%"
+    },
+    {
+      "degree": "SSC",
+      "school": "Sri Chaitanya High School, Punadipadu",
+      "period": "2020 – 2021",
+      "detail": "GPA: 10"
     }
   ],
   "contact": {
-    "github": "https://github.com/yourusername",
-    "linkedin": "https://linkedin.com/in/yourusername"
+    "github": "https://github.com/vivekchowdarythondapu",
+    "linkedin": "https://linkedin.com/in/vivek-chowdary-195428291",
+    "phone": "+91 6304484428"
   }
 }

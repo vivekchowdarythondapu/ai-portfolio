@@ -8,8 +8,10 @@ const CATEGORY_LABELS: Record<string, string> = {
   languages: "Languages",
   frontend: "Frontend",
   backend: "Backend",
-  ai: "AI",
-  tools: "Tools",
+  databases: "Databases",
+  ai: "AI / ML",
+  core: "Core CS",
+  tools: "Tools & Deployment",
 };
 
 export default function SkillsSection({ profile }: { profile: Profile }) {

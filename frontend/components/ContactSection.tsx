@@ -22,6 +22,14 @@ export default function ContactSection({ profile }: { profile: Profile }) {
             >
               {profile.email}
             </a>
+            {profile.contact.phone && (
+              <a
+                href={`tel:${profile.contact.phone.replace(/\s/g, "")}`}
+                className="rounded-full border border-white/15 px-6 py-3 text-gray-200 transition hover:-translate-y-0.5 hover:border-white/40"
+              >
+                📞 {profile.contact.phone}
+              </a>
+            )}
             <a
               href={profile.contact.github}
               target="_blank"
