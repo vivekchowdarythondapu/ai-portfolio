@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -40,16 +39,9 @@ export default function Navbar() {
         style={{ scaleX: progress }}
       />
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/#top" className="flex items-center gap-2.5" aria-label="Back to top">
-          <Image
-            src="/profile.jpg"
-            alt="Vivek Chowdary"
-            width={36}
-            height={36}
-            className="h-9 w-9 rounded-full object-cover ring-2 ring-indigo-400/40 transition hover:ring-indigo-400"
-          />
-          <span className="text-sm font-bold tracking-tight text-gray-100 md:block">
-            Vivek Chowdary
+        <Link href="/#top" className="group" aria-label="Back to top">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-black text-white shadow-lg shadow-indigo-500/30 transition group-hover:rotate-6 group-hover:scale-110">
+            V
           </span>
         </Link>
 
