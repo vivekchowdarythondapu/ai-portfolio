@@ -163,7 +163,9 @@ export default function ContactSection({ profile }: { profile: Profile }) {
             >
               …or{" "}
               <a
-                href={`mailto:${profile.email}`}
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}&su=${encodeURIComponent("Hello Vivek — from your portfolio")}`}
+                target="_blank"
+                rel="noreferrer"
                 className="text-indigo-400 underline underline-offset-4 transition hover:text-indigo-300"
               >
                 compose an email
