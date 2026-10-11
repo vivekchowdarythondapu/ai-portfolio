@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import AchievementsSection from "@/components/AchievementsSection";
 import ChatWidget from "@/components/ChatWidget";
 import ContactSection from "@/components/ContactSection";
-import FadeIn from "@/components/FadeIn";
 import EducationSection from "@/components/EducationSection";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import ProjectsSection from "@/components/ProjectsSection";
 import SkillsSection from "@/components/SkillsSection";
+import TimelineSection from "@/components/TimelineSection";
 import { fetchProfile, type Profile } from "@/lib/api";
 import ParticleField from "@/components/ParticleField";
-import SectionDecor from "@/components/SectionDecor";
 
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -56,34 +55,20 @@ export default function Home() {
         <ProjectsSection profile={profile} />
         <AchievementsSection profile={profile} />
 
-        {/* Experience */}
-        <section id="experience" className="relative mx-auto max-w-6xl px-6 py-20">
-          <SectionDecor c1="#22d3ee" c2="#818cf8" glyphs={["🔬", "🧠", "📡", "📝", "💡", "🎓"]} />
-          <FadeIn>
-            <h2 className="text-3xl font-bold md:text-4xl">
-              Experience<span className="text-gradient">.</span>
-            </h2>
-          </FadeIn>
-          <div className="mt-10 space-y-6">
-            {profile.experience.map((job, i) => (
-              <FadeIn key={`${job.company}-${i}`} delay={i * 0.1}>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-indigo-400/30">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-gray-100">
-                      {job.role} · <span className="text-indigo-300">{job.company}</span>
-                    </h3>
-                    <span className="text-sm text-gray-500">{job.period}</span>
-                  </div>
-                  <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-gray-400">
-                    {job.highlights.map((h, j) => (
-                      <li key={j}>{h}</li>
-                    ))}
-                  </ul>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </section>
+        <TimelineSection
+          id="experience"
+          title="Experience"
+          c1="#22d3ee"
+          c2="#818cf8"
+          glyphs={["🔬", "🧠", "📡", "📝", "💡", "🎓"]}
+          entries={profile.experience.map((job) => ({
+            icon: "🔬",
+            title: job.role,
+            subtitle: job.company,
+            period: job.period,
+            bullets: job.highlights,
+          }))}
+        />
 
         <EducationSection education={profile.education ?? []} />
 
