@@ -25,7 +25,8 @@
       "name": "Smart Campus Lost & Found Portal",
       "description": "Full-stack portal that automatically matches lost and found reports across a 5,000+ student campus. JWT authentication, Cloudinary photo uploads, a cosine-similarity matching engine with an 80%+ match rate, real-time Socket.IO chat to arrange handovers and a Recharts analytics dashboard. Deployed on Vercel/Render with sub-2s page loads.",
       "tech": ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "JWT", "Cloudinary", "Recharts"],
-      "demo": "",
+      "link": "https://github.com/vivekchowdarythondapu/campus-lost-found",
+      "demo": "https://campus-lost-found-gamma.vercel.app/",
       "details": "Losing things on a 5,000+ student campus is inevitable — but the notice boards weren't cutting it. This portal automates the match between \"I lost X\" and \"I found X\" reports.\n\nAt its core is a cosine-similarity matching engine that compares lost and found reports (title, description, category, location) and automatically surfaces likely matches the moment a new report is posted — achieving an 80%+ match rate in testing.\n\nThe stack: JWT authentication for secure accounts, Cloudinary for photo uploads, Socket.IO for real-time chat so finders and losers can arrange handovers instantly, and a Recharts analytics dashboard showing lost/found trends across the campus.\n\nIt's fully deployed — frontend on Vercel, backend on Render — with sub-2-second page loads, and was built as a real utility students could actually use."
     },
     {
