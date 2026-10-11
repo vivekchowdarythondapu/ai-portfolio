@@ -1,19 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 import FadeIn from "@/components/FadeIn";
 import SectionDecor from "@/components/SectionDecor";
+import TiltCard from "@/components/TiltCard";
 import type { AddedSkill, Profile } from "@/lib/api";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  languages: "Languages",
-  frontend: "Frontend",
-  backend: "Backend",
-  databases: "Databases",
-  ai: "AI / ML",
-  core: "Core CS",
-  tools: "Tools & Deployment",
+const CATEGORY_META: Record<string, { label: string; icon: string; c1: string; c2: string }> = {
+  languages: { label: "Languages", icon: "⌨️", c1: "#818cf8", c2: "#22d3ee" },
+  frontend: { label: "Frontend", icon: "🎨", c1: "#f472b6", c2: "#a855f7" },
+  backend: { label: "Backend", icon: "⚙️", c1: "#f59e0b", c2: "#f97316" },
+  databases: { label: "Databases", icon: "🗄️", c1: "#34d399", c2: "#14b8a6" },
+  ai: { label: "AI / ML", icon: "🤖", c1: "#c084fc", c2: "#ec4899" },
+  core: { label: "Core CS", icon: "🧠", c1: "#38bdf8", c2: "#6366f1" },
+  tools: { label: "Tools & Deployment", icon: "🛠️", c1: "#94a3b8", c2: "#22d3ee" },
 };
+
+const FALLBACK = { label: "", icon: "✨", c1: "#818cf8", c2: "#22d3ee" };
 
 export default function SkillsSection({ profile }: { profile: Profile }) {
   const groups = Object.entries(profile.skills).filter(
@@ -35,25 +39,52 @@ export default function SkillsSection({ profile }: { profile: Profile }) {
       </FadeIn>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {groups.map(([group, items], i) => (
-          <FadeIn key={group} delay={i * 0.08}>
-            <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-indigo-400/40 hover:bg-white/[0.06]">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-indigo-300">
-                {CATEGORY_LABELS[group] ?? group}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {items.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full bg-white/5 px-3 py-1.5 text-sm text-gray-200 ring-1 ring-white/10"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-        ))}
+        {groups.map(([group, items], i) => {
+          const meta = CATEGORY_META[group] ?? { ...FALLBACK, label: group };
+          return (
+            <FadeIn key={group} delay={i * 0.08} className="h-full">
+              <TiltCard maxTilt={5} className="h-full">
+                <div
+                  className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:border-indigo-400/40 hover:bg-white/[0.06]"
+                  style={{ "--c1": meta.c1 } as CSSProperties}
+                >
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3
+                      className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider"
+                      style={{ color: meta.c1 }}
+                    >
+                      <span aria-hidden>{meta.icon}</span>
+                      {meta.label}
+                    </h3>
+                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-gray-400 ring-1 ring-white/10">
+                      {items.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map((skill, j) => (
+                      <motion.span
+                        key={skill}
+                        initial={{ opacity: 0, scale: 0.8, y: 6 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 350,
+                          damping: 22,
+                          delay: j * 0.03,
+                        }}
+                        whileHover={{ y: -2, scale: 1.06 }}
+                        className="cursor-default rounded-full bg-white/5 px-3 py-1.5 text-sm text-gray-200 ring-1 ring-white/10 transition-colors hover:text-white hover:shadow-[0_0_16px_var(--c1)]"
+                      >
+                        {skill}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              </TiltCard>
+            </FadeIn>
+          );
+        })}
       </div>
 
       {added.length > 0 && (
@@ -76,7 +107,7 @@ export default function SkillsSection({ profile }: { profile: Profile }) {
                         initial={{ width: 0 }}
                         whileInView={{ width: `${s.level}%` }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                        transition={{ duration: 1, delay: 0.2 + i * 0.05, ease: "easeOut" }}
                       />
                     </div>
                   )}
