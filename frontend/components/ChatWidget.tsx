@@ -32,6 +32,25 @@ function navigateTo(section: string) {
   el.classList.add("section-flash");
 }
 
+/** Gemini-style four-point sparkle mark used as the AI's face. */
+function GeminiSparkle({ className = "", gradient = false }: { className?: string; gradient?: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <defs>
+        <linearGradient id="gemini-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#818cf8" />
+          <stop offset="55%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#22d3ee" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M12 1.5c.6 5.4 5.1 9.9 10.5 10.5c-5.4.6-9.9 5.1-10.5 10.5c-.6-5.4-5.1-9.9-10.5-10.5C6.9 11.4 11.4 6.9 12 1.5Z"
+        fill={gradient ? "url(#gemini-grad)" : "currentColor"}
+      />
+    </svg>
+  );
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -103,7 +122,9 @@ export default function ChatWidget() {
         aria-label="Open AI chat"
       >
         <span className="pulse-ring absolute inset-0 rounded-full" />
-        <span className="relative">{open ? "✕" : "🤖"}</span>
+        <span className="relative flex h-7 w-7 items-center justify-center">
+          {open ? "✕" : <GeminiSparkle className="h-7 w-7 text-white" />}
+        </span>
       </button>
 
       <AnimatePresence>
@@ -116,7 +137,7 @@ export default function ChatWidget() {
             className="fixed bottom-24 right-4 z-50 flex h-[32rem] w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d16] shadow-2xl shadow-black/60"
           >
             <div className="flex items-center gap-3 border-b border-white/10 bg-gradient-to-r from-indigo-600/20 to-cyan-500/10 px-4 py-3">
-              <span className="text-xl">🤖</span>
+              <GeminiSparkle gradient className="h-7 w-7 shrink-0" />
               <div>
                 <p className="text-sm font-semibold">Portfolio AI</p>
                 <p className="text-xs text-gray-400">Ask about my experience</p>
