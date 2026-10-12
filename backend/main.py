@@ -235,6 +235,21 @@ def delete_achievement(item_id: int) -> dict:
 # ---------------------------------------------------------------- AI chat (SSE stream)
 
 
+def friendly_ai_error(raw: str) -> str:
+    """Translate provider errors into something a visitor can enjoy reading."""
+    low = raw.lower()
+    if "429" in low or "quota" in low or "rate" in low:
+        return (
+            "😅 I've used up my daily AI quota — I recharge overnight! "
+            "Everything about Vivek is still on this page, or scroll down to the "
+            "Contact section to reach him directly."
+        )
+    if "404" in low or "not_found" in low or "no longer available" in low:
+        return "🙈 My brain is getting a quick tune-up — please try again in a few minutes!"
+    print(f"[chat] provider error: {raw}")  # full detail stays in the server logs
+    return "🙈 My brain hiccuped — please try again in a moment."
+
+
 @app.post("/api/chat")
 def chat(req: ChatRequest) -> StreamingResponse:
     provider = get_provider()
@@ -252,9 +267,11 @@ def chat(req: ChatRequest) -> StreamingResponse:
             for text in provider.stream(system_prompt, history):
                 yield f"data: {json.dumps({'text': text})}\n\n"
         except ProviderError as exc:
-            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+            print(f"[chat] provider error: {exc}")
+            yield f"data: {json.dumps({'error': friendly_ai_error(str(exc))})}\n\n"
         except Exception as exc:  # never break the SSE stream mid-flight
-            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+            print(f"[chat] unexpected error: {exc}")
+            yield f"data: {json.dumps({'error': friendly_ai_error(str(exc))})}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
