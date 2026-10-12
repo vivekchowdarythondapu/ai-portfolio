@@ -1,0 +1,40 @@
+{
+  "skills": [],
+  "projects": [],
+  "achievements": [
+    {
+      "title": "Oracle Certified Professional: Java SE 17 Developer",
+      "description": "Recognized by Oracle Corporation as an Oracle Certified Professional for Java SE 17.",
+      "date": "March 2026",
+      "details": "An official Oracle Corporation certification validating professional-level command of Java SE 17 — one of Oracle's long-term-support releases.\n\nThe exam covers the complete SE 17 associate + professional curriculum: object-oriented programming, generics and collections, exceptions and assertions, concurrency and parallel streams, java.time and NIO.2 APIs, modules, lambdas and functional interfaces, and I/O and networking fundamentals.\n\nClearing it verified my core CS foundation in DSA and OOP with an industry-recognized credential — the same Java skills I apply in competitive programming (C++/Java DSA) and backend projects.",
+      "image": "/uploads/e61ac2272ee6407cae522c019031007a.png",
+      "images": [
+        "/uploads/e61ac2272ee6407cae522c019031007a.png"
+      ],
+      "id": 1
+    },
+    {
+      "title": "MongoDB Associate Developer",
+      "description": "Certified Associate Developer, issued by MongoDB (MongoDB University).",
+      "date": "April 2026",
+      "details": "An official certification issued by MongoDB through MongoDB University (issuer ID 3841744), validating hands-on MongoDB developer skills.\n\nThe certification covers CRUD operations and projections, indexing strategies, data modeling with embedded vs. referenced documents, the aggregation pipeline, replication and sharding fundamentals, and using the MongoDB drivers from application code.\n\nIt directly backs the database layer of my MERN projects — the Lost & Found Portal and ClientSync both run on MongoDB, using indexing and aggregation pipelines for the matching engine and dashboard analytics.",
+      "image": "/uploads/45db34a9699a433ba34b13e4cdb04ec6.png",
+      "images": [
+        "/uploads/45db34a9699a433ba34b13e4cdb04ec6.png"
+      ],
+      "id": 2
+    },
+    {
+      "title": "CODE4HER Mini Hackathon - Winner",
+      "description": "Won the Rs. 3,000 prize at the CODE4HER Mini Hackathon (International Women's Day Special), organized by GDG on Campus - SRM University-AP with the Department of CSE, competing with team Syntax Slayers.",
+      "date": "March 2026",
+      "details": "CODE4HER Mini Hackathon — International Women's Day Special, held on 13 March 2026 and organized by GDG on Campus SRM University-AP in collaboration with the Department of CSE.\n\nA fast-paced innovation sprint where teams competed to build a working solution within hours. Competing as team Syntax Slayers, we designed, developed and demoed our project end-to-end and won the ₹3,000 prize, presented as a cheque at the closing ceremony.\n\nHackathons like this are where I do my best learning — taking an idea from a blank editor to a live demo under pressure, and presenting it to a panel, is exactly the build-and-ship energy I bring to every project.",
+      "image": "/uploads/088074efae874a84886887fd8dd5b1a2.jpg",
+      "images": [
+        "/uploads/088074efae874a84886887fd8dd5b1a2.jpg",
+        "/uploads/code4her-stage.jpg"
+      ],
+      "id": 3
+    }
+  ]
+}

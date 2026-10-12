@@ -4,13 +4,12 @@ node_modules/
 __pycache__/
 *.pyc
 
-# environment secrets & local data
+# environment secrets (never commit)
 .env
 .env.local
 
-# uploaded images & dashboard content (local-only)
-backend/uploads/
-backend/data.json
+# NOTE: backend/uploads/ and backend/data.json ARE committed on purpose —
+# Render serves the achievement photos and dashboard content from them.
 
 # next.js
 frontend/.next/
